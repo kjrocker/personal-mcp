@@ -1,4 +1,5 @@
 import requests
+import subprocess
 from requests.exceptions import RequestException
 from bs4 import BeautifulSoup
 from html2text import html2text
@@ -50,5 +51,26 @@ def read_wikipedia_article(url: str) -> str:
         raise McpError(ErrorData(INVALID_PARAMS, str(e))) from e
     except RequestException as e:
         raise McpError(ErrorData(INTERNAL_ERROR, f"Request error: {str(e)}")) from e
+    except Exception as e:
+        raise McpError(ErrorData(INTERNAL_ERROR, f"Unexpected error: {str(e)}")) from e
+    
+@mcp.tool()
+def open_webpage(url: str) -> str:
+    """
+    Open the provided URL in Firefox.
+
+    Usage:
+        open_webpage("https://en.wikipedia.org/wiki/Python_(programming_language)")
+    """
+    try:
+        # Validate input
+        if not url.startswith("http"):
+            raise ValueError("URL must start with http or https.")
+
+        subprocess.run(["firefox", url])
+        return "Opened the page in Firefox."
+
+    except ValueError as e:
+        raise McpError(ErrorData(INVALID_PARAMS, str(e))) from e
     except Exception as e:
         raise McpError(ErrorData(INTERNAL_ERROR, f"Unexpected error: {str(e)}")) from e
