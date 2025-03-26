@@ -1,0 +1,19 @@
+[project]
+name = "mcp-kehvyn"
+version = "0.1.0"
+description = "Personal Tools for MCP"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "html2text>=2024.2.26",
+    "mcp[cli]>=1.2.0",
+    "requests>=2.32.3",
+]
+
+[project.scripts]
+mcp-kehvyn = "mcp_kehvyn:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
